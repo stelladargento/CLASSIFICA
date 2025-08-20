@@ -20,6 +20,8 @@
       margin: 1em 0;
       color: #c0a0ff;
       text-shadow: 2px 2px 8px #000;
+      z-index: 1;
+      position: relative;
     }
 
     table {
@@ -54,7 +56,6 @@
       transition: all 0.3s ease;
     }
 
-    /* Primo classificato: effetto fiamma */
     .campione td {
       color: #ff4500;
       text-shadow: 0 0 10px #ff4500, 0 0 20px #ff6347;
@@ -66,14 +67,13 @@
       to { text-shadow: 0 0 20px #ff6347; }
     }
 
-    /* Nebbia animata */
     .fog {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('https://i.ibb.co/6WZzYgF/fog.gif') repeat;
+      background: url('https://i.ibb.co/9Zf1JZB/fog-clean.gif') repeat;
       background-size: cover;
       opacity: 0.12;
       pointer-events: none;
@@ -101,7 +101,7 @@
         data.forEach((row, index) => {
           const tr = document.createElement("tr");
           tr.innerHTML = `<td>${row.Nome}</td><td>${row.Punteggio}</td>`;
-          if (index === 0) tr.classList.add("campione"); // Primo in classifica
+          if (index === 0) tr.classList.add("campione");
           tbody.appendChild(tr);
         });
       })
