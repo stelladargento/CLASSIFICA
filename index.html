@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>CLASSIFICA</title>
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #e0dede;
+      font-family: 'Cinzel', serif;
+      text-align: center;
+      padding: 2em;
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 1em;
+      text-shadow: 2px 2px #660000;
+    }
+    table {
+      margin: auto;
+      border-collapse: collapse;
+      width: 60%;
+      background-color: #1a1a1a;
+      border: 1px solid #660000;
+    }
+    th, td {
+      padding: 0.8em;
+      border: 1px solid #660000;
+    }
+    th {
+      background-color: #330000;
+      color: #ffcccc;
+    }
+    td {
+      color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>CLASSIFICA</h1>
+  <table id="classifica">
+    <thead>
+      <tr><th>Nome</th><th>Punteggio</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaBHt5qWSaiq8B57s9EXCGD6K239PsA64QaIIqfEGOHryhQ__oJHTxp2zaQ6ZWY9qOmsvOM2ffeYcg/pub?output=csv";
+
+    fetch(csvUrl)
+      .then(response => response.text())
+      .then(data => {
+        const rows = data.split("\n").slice(1);
+        const tbody = document.querySelector("#classifica tbody");
+        rows.forEach(row => {
+          const [nome, punteggio] = row.split(",");
+          if (nome && punteggio) {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td>${nome}</td><td>${punteggio}</td>`;
+            tbody.appendChild(tr);
+          }
+        });
+      });
+  </script>
+</body>
+</html>
