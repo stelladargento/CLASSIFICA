@@ -11,8 +11,6 @@
       background: url('https://www.transparenttextures.com/patterns/dark-mosaic.png') repeat;
       color: #eee;
       text-align: center;
-      position: relative;
-      overflow: hidden;
     }
 
     h1 {
@@ -20,8 +18,6 @@
       margin: 1em 0;
       color: #c0a0ff;
       text-shadow: 2px 2px 8px #000;
-      z-index: 1;
-      position: relative;
     }
 
     table {
@@ -30,8 +26,6 @@
       width: 70%;
       background-color: rgba(0, 0, 0, 0.6);
       box-shadow: 0 0 20px #000;
-      position: relative;
-      z-index: 1;
     }
 
     th, td {
@@ -58,31 +52,11 @@
 
     .campione td {
       color: #ff4500;
-      text-shadow: 0 0 10px #ff4500, 0 0 20px #ff6347;
-      animation: flame 1s infinite alternate;
-    }
-
-    @keyframes flame {
-      from { text-shadow: 0 0 10px #ff4500; }
-      to { text-shadow: 0 0 20px #ff6347; }
-    }
-
-    .fog {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://i.ibb.co/9Zf1JZB/fog-clean.gif') repeat;
-      background-size: cover;
-      opacity: 0.12;
-      pointer-events: none;
-      z-index: 0;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="fog"></div>
   <h1>CLASSIFICA</h1>
   <table id="classifica">
     <thead>
