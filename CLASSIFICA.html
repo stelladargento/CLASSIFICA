@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Classifica Gotica</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #0b0b0b;
+      color: #e0dede;
+      font-family: 'Cinzel Decorative', serif;
+      padding: 30px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5em;
+      color: #bfa77f;
+      text-shadow: 2px 2px 5px #000;
+      margin-bottom: 20px;
+    }
+    ol {
+      list-style: none;
+      padding: 0;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    li {
+      font-size: 1.5em;
+      margin: 15px 0;
+      padding: 10px;
+      border-bottom: 1px solid #444;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .first {
+      background: linear-gradient(90deg, #3b1f1f, #5e2e2e);
+      color: #ffd700;
+      font-weight: bold;
+      box-shadow: 0 0 15px #ffd700;
+      border: 2px solid #ffd700;
+    }
+    .icon {
+      margin-right: 10px;
+    }
+    .name {
+      flex-grow: 1;
+      text-align: left;
+    }
+    .score {
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>👑 Classifica dei Dannati</h1>
+  <ol>
+    <li class="first">
+      <span class="icon">🦇</span>
+      <span class="name">James Bonn</span>
+      <span class="score">84</span>
+    </li>
+    <li>
+      <span class="icon">🕷️</span>
+      <span class="name">Cleopatra Abu</span>
+      <span class="score">60</span>
+    </li>
+    <li>
+      <span class="icon">🪦</span>
+      <span class="name">Cleopazzia Resident</span>
+      <span class="score">50</span>
+    </li>
+  </ol>
+</body>
+</html>
