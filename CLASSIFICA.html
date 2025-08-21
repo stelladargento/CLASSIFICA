@@ -55,21 +55,67 @@
 <body>
   <h1>👑 Classifica dei Dannati</h1>
   <ol>
-    <li class="first">
-      <span class="icon">🦇</span>
-      <span class="name">James Bonn</span>
-      <span class="score">84</span>
-    </li>
-    <li>
-      <span class="icon">🕷️</span>
-      <span class="name">Cleopatra Abu</span>
-      <span class="score">60</span>
-    </li>
-    <li>
-      <span class="icon">🪦</span>
-      <span class="name">Cleopazzia Resident</span>
-      <span class="score">50</span>
-    </li>
+    <!-- I dati verranno caricati qui -->
   </ol>
+
+  <script>
+    const endpoint = "https://script.google.com/macros/s/AKfycbyGdwT6LJbE4JNj6CBzKqyaGxdPDsE1BKNCGuCw_LGKKJwgyli7RBuPOgIRm3N-XRx6/exec";
+    const icons = ["🦇", "🕷️", "🪦", "🧛", "🩸", "🕯️", "🧟", "⚰️", "🕸️"];
+
+    async function loadLeaderboard() {
+      try {
+        const response = await fetch(endpoint);
+        const text = await response.text();
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, "text/html");
+        const rows = doc.querySelectorAll("table tr");
+
+        const list = document.querySelector("ol");
+        list.innerHTML = "";
+
+        let players = [];
+
+        rows.forEach((row, index) => {
+          if (index === 0) return;
+          const cells = row.querySelectorAll("td");
+          if (cells.length < 2) return;
+
+          const name = cells[0].textContent.trim();
+          const score = parseInt(cells[1].textContent.trim());
+          players.push({ name, score });
+        });
+
+        players.sort((a, b) => b.score - a.score);
+
+        players.forEach((player, i) => {
+          const li = document.createElement("li");
+          if (i === 0) li.classList.add("first");
+
+          const icon = document.createElement("span");
+          icon.className = "icon";
+          icon.textContent = icons[i % icons.length];
+
+          const name = document.createElement("span");
+          name.className = "name";
+          name.textContent = player.name;
+
+          const score = document.createElement("span");
+          score.className = "score";
+          score.textContent = player.score;
+
+          li.appendChild(icon);
+          li.appendChild(name);
+          li.appendChild(score);
+          list.appendChild(li);
+        });
+      } catch (error) {
+        console.error("Errore nel caricamento della classifica:", error);
+      }
+    }
+
+    loadLeaderboard();
+    setInterval(loadLeaderboard, 30000);
+  </script>
 </body>
 </html>
