@@ -2,60 +2,120 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Classifica Giocatori</title>
+  <title>Classifica Gotica</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
-      padding: 20px;
+      background: #0b0b0b;
+      color: #e0dede;
+      font-family: 'Cinzel Decorative', serif;
+      padding: 30px;
       text-align: center;
     }
     h1 {
-      color: #333;
+      font-size: 2.5em;
+      color: #bfa77f;
+      text-shadow: 2px 2px 5px #000;
+      margin-bottom: 20px;
     }
-    table {
+    ol {
+      list-style: none;
+      padding: 0;
+      max-width: 500px;
       margin: 0 auto;
-      border-collapse: collapse;
-      width: 60%;
-      background: #fff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    th, td {
-      border: 1px solid #ccc;
+    li {
+      font-size: 1.5em;
+      margin: 15px 0;
       padding: 10px;
-      font-size: 16px;
+      border-bottom: 1px solid #444;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    th {
-      background-color: #eee;
+    .first {
+      background: linear-gradient(90deg, #3b1f1f, #5e2e2e);
+      color: #ffd700;
+      font-weight: bold;
+      box-shadow: 0 0 15px #ffd700;
+      border: 2px solid #ffd700;
+    }
+    .icon {
+      margin-right: 10px;
+    }
+    .name {
+      flex-grow: 1;
+      text-align: left;
+    }
+    .score {
+      font-size: 1.2em;
     }
   </style>
 </head>
 <body>
-  <h1>🏆 Classifica Giocatori</h1>
-  <table id="leaderboard">
-    <tr><th>Nome</th><th>Punteggio</th></tr>
-  </table>
+  <h1>👑 Classifica dei Dannati</h1>
+  <ol>
+    <!-- I dati verranno caricati qui -->
+  </ol>
 
   <script>
-    fetch("https://script.google.com/macros/s/AKfycbyGdwT6LJbE4JNj6CBzKqyaGxdPDsE1BKNCGuCw_LGKKJwgyli7RBuPOgIRm3N-XRx6/exec")
-      .then(response => response.text())
-      .then(html => {
+    const endpoint = "https://script.google.com/macros/s/AKfycbyGdwT6LJbE4JNj6CBzKqyaGxdPDsE1BKNCGuCw_LGKKJwgyli7RBuPOgIRm3N-XRx6/exec";
+    const icons = ["🦇", "🕷️", "🪦", "🧛", "🩸", "🕯️", "🧟", "⚰️", "🕸️"];
+
+    async function loadLeaderboard() {
+      try {
+        const response = await fetch(endpoint);
+        const text = await response.text();
+
         const parser = new DOMParser();
-        const doc = parser.parseFromString(html, "text/html");
+        const doc = parser.parseFromString(text, "text/html");
         const rows = doc.querySelectorAll("table tr");
 
-        const table = document.getElementById("leaderboard");
-        for (let i = 1; i < rows.length; i++) {
-          table.appendChild(rows[i]);
-        }
-      })
-      .catch(error => {
+        const list = document.querySelector("ol");
+        list.innerHTML = "";
+
+        let players = [];
+
+        rows.forEach((row, index) => {
+          if (index === 0) return;
+          const cells = row.querySelectorAll("td");
+          if (cells.length < 2) return;
+
+          const name = cells[0].textContent.trim();
+          const score = parseInt(cells[1].textContent.trim());
+          players.push({ name, score });
+        });
+
+        players.sort((a, b) => b.score - a.score);
+
+        players.forEach((player, i) => {
+          const li = document.createElement("li");
+          if (i === 0) li.classList.add("first");
+
+          const icon = document.createElement("span");
+          icon.className = "icon";
+          icon.textContent = icons[i % icons.length];
+
+          const name = document.createElement("span");
+          name.className = "name";
+          name.textContent = player.name;
+
+          const score = document.createElement("span");
+          score.className = "score";
+          score.textContent = player.score;
+
+          li.appendChild(icon);
+          li.appendChild(name);
+          li.appendChild(score);
+          list.appendChild(li);
+        });
+      } catch (error) {
         console.error("Errore nel caricamento della classifica:", error);
-        const table = document.getElementById("leaderboard");
-        const row = document.createElement("tr");
-        row.innerHTML = "<td colspan='2'>⚠️ Impossibile caricare la classifica</td>";
-        table.appendChild(row);
-      });
+      }
+    }
+
+    loadLeaderboard();
+    setInterval(loadLeaderboard, 30000);
   </script>
 </body>
 </html>
