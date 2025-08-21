@@ -2,86 +2,59 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>CLASSIFICA</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap" rel="stylesheet">
+  <title>Classifica Giocatori</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Cinzel Decorative', cursive;
-      background-color: #000;
-      color: #eee;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding: 20px;
       text-align: center;
     }
-
     h1 {
-      font-size: 4em;
-      margin: 1em 0;
-      color: #c0a0ff;
-      text-shadow: 2px 2px 8px #660066;
+      color: #333;
     }
-
     table {
       margin: 0 auto;
       border-collapse: collapse;
-      width: 70%;
-      background-color: rgba(20, 20, 20, 0.9);
-      box-shadow: 0 0 20px #222;
+      width: 60%;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
     th, td {
-      padding: 15px;
-      border-bottom: 1px solid #444;
-      font-size: 1.2em;
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-size: 16px;
     }
-
     th {
-      background-color: #111;
-      color: #ffccff;
-    }
-
-    tr:hover td {
-      background-color: #222;
-      transition: background 0.3s ease;
-    }
-
-    td:nth-child(2):hover {
-      color: #ff6f61;
-      text-shadow: 0 0 10px #ff6f61;
-      transition: all 0.3s ease;
-    }
-
-    .campione td {
-      color: #ff4500;
-      font-weight: bold;
-      text-shadow: 0 0 10px #ff4500;
+      background-color: #eee;
     }
   </style>
 </head>
 <body>
-  <h1>CLASSIFICA</h1>
-  <table id="classifica">
-    <thead>
-      <tr><th>Nome</th><th>Punteggio</th></tr>
-    </thead>
-    <tbody></tbody>
+  <h1>🏆 Classifica Giocatori</h1>
+  <table id="leaderboard">
+    <tr><th>Nome</th><th>Punteggio</th></tr>
   </table>
 
   <script>
-    const sheetUrl = "https://opensheet.elk.sh/1Zkpm4aUsvwV13gQhNgx2hXeJWneJk2bHwSA4KpswRH0/Foglio1";
+    fetch("https://script.google.com/macros/s/AKfycbyGdwT6LJbE4JNj6CBzKqyaGxdPDsE1BKNCGuCw_LGKKJwgyli7RBuPOgIRm3N-XRx6/exec")
+      .then(response => response.text())
+      .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        const rows = doc.querySelectorAll("table tr");
 
-    fetch(sheetUrl)
-      .then(response => response.json())
-      .then(data => {
-        const tbody = document.querySelector("#classifica tbody");
-        data.forEach((row, index) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `<td>${row.Nome}</td><td>${row.Punteggio}</td>`;
-          if (index === 0) tr.classList.add("campione");
-          tbody.appendChild(tr);
-        });
+        const table = document.getElementById("leaderboard");
+        for (let i = 1; i < rows.length; i++) {
+          table.appendChild(rows[i]);
+        }
       })
       .catch(error => {
         console.error("Errore nel caricamento della classifica:", error);
+        const table = document.getElementById("leaderboard");
+        const row = document.createElement("tr");
+        row.innerHTML = "<td colspan='2'>⚠️ Impossibile caricare la classifica</td>";
+        table.appendChild(row);
       });
   </script>
 </body>
